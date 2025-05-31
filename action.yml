@@ -97,6 +97,10 @@ runs:
       id: prepare
       shell: bash
       run: |
+        # デバッグ用
+        echo "OVERRIDE_GITHUB_TOKEN is set: ${OVERRIDE_GITHUB_TOKEN:+YES}"
+        echo "OVERRIDE_GITHUB_TOKEN length: ${#OVERRIDE_GITHUB_TOKEN}"
+
         bun run ${{ github.action_path }}/src/entrypoints/prepare.ts
       env:
         TRIGGER_PHRASE: ${{ inputs.trigger_phrase }}

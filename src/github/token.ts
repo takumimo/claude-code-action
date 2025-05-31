@@ -94,6 +94,9 @@ async function exchangeForAppToken(oidcToken: string): Promise<string> {
 
 export async function setupGitHubToken(): Promise<string> {
   try {
+    console.log("OVERRIDE_GITHUB_TOKEN exists:", !!process.env.OVERRIDE_GITHUB_TOKEN);
+    console.log("OVERRIDE_GITHUB_TOKEN length:", process.env.OVERRIDE_GITHUB_TOKEN?.length || 0);
+      
     // Check if GitHub token was provided as override
     const providedToken = process.env.OVERRIDE_GITHUB_TOKEN;
 
