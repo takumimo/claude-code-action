@@ -148,6 +148,20 @@ runs:
         VERTEX_REGION_CLAUDE_3_5_SONNET: ${{ env.VERTEX_REGION_CLAUDE_3_5_SONNET }}
         VERTEX_REGION_CLAUDE_3_7_SONNET: ${{ env.VERTEX_REGION_CLAUDE_3_7_SONNET }}
 
+    - name: Debug MCP servers
+      if: steps.prepare.outputs.contains_trigger == 'true' && always()
+      shell: bash
+      run: |
+        echo "=== Docker containers ==="
+        docker ps -a
+        echo "=== Docker logs for MCP containers ==="
+        docker ps -a --format "table {{.Names}}" | grep -E "(mcp|github)" | while read name; do
+          echo "--- Logs for $name ---"
+          docker logs $name 2>&1 || true
+        done
+        echo "=== Environment variables (filtered) ==="
+        env | grep -E "(GITHUB_TOKEN|GH_)" | sed 's/=.*/=***/'
+
     - name: Update comment with job link
       if: steps.prepare.outputs.contains_trigger == 'true' && steps.prepare.outputs.claude_comment_id && always()
       shell: bash
